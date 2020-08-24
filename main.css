@@ -1,0 +1,45 @@
+.oldMessageContainer {
+  border: 0.1rem solid blue;
+  margin: 0rem 2rem;
+}
+
+.oldMessage {
+  border-bottom: 0.1rem solid grey;
+  display: flex;
+  flex-direction: row;
+}
+
+.userImage {
+  border: 0.1rem solid black;
+  padding: 0.2rem;
+}
+
+.userOldMessage {
+  padding: 1rem;
+}
+
+.nameTime {
+  display: flex;
+  flex-direction: row;
+  font-size: 0.7rem;
+}
+
+.createdAt {
+  margin-left: 1rem;
+}
+
+.userMessageContainer {
+  border: 0.1rem solid black;
+  margin: 1rem 2rem;
+}
+
+.input {
+  width: 100%;
+  padding: 1rem;
+}
+
+.stylingContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
