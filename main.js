@@ -109,29 +109,6 @@ async function onSaveMessage(event) {
   const oldMessage = await response.json();
 }
 
-//   label.innerHTML = `<input class="checkbox" type="checkbox" checked /> ${description}`;
-
-//   // update the items array to reflect the new completed status of the todo
-
-// const clickedLabel = this.parentNode;
-//   const clickedIndex = children.indexOf(this.parentNode);
-//   items[clickedIndex].completed = this.checked;
-
-//   // update the server to reflect the new completed status of the todo
-//   const response = await fetch(
-//     `http://todo.codefriends.larner.com/item/${items[clickedIndex].id}`,
-//     {
-//       method: "PUT",
-//       body: JSON.stringify({
-//         completed: this.checked,
-//       }),
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//     }
-//   );
-//   const json = await response.json();
-
 // when the page first loads
 async function onPageLoad() {
   console.log("onPageLoad");
