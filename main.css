@@ -51,6 +51,11 @@
 .messageContainer {
   display: flex;
   flex-direction: row;
+  align-items: center;
+}
+
+.userReaction {
+  font-size: 0.8rem;
 }
 
 .message {

@@ -1,6 +1,13 @@
 console.log("working");
 
 let messages = [];
+const reactionOb = [
+  { id: 1, emoji: "👍", picked: false },
+  { id: 2, emoji: "😆", picked: false },
+  { id: 3, emoji: "😉", picked: false },
+  { id: 4, emoji: "🙌", picked: false },
+];
+let reactionAddedArray = [];
 
 // when we click the add button
 async function onAddMessage(event) {
@@ -36,20 +43,53 @@ async function onAddMessage(event) {
 // and listen for click events on the new todo item to update the completed
 // status
 function addMessageToPage(message, user, createdAt) {
+  console.log("adding messages to page");
   const oldDivContainer = document.querySelector(".oldMessageContainer");
   const oldDiv = document.querySelector(".oldMessage").cloneNode(true);
   oldDiv.querySelector(".message").innerHTML = `${message}`;
   oldDiv.querySelector(".userName").innerHTML = `${user}`;
+  let date = new Date(createdAt);
+  console.log(date);
+  let localDate = date.toLocaleDateString();
+  let localHour = date.getHours();
+  let ampm = "am";
+  if (localHour > 12) {
+    localHour = localHour - 12;
+    ampm = "pm";
+  }
+  let minutes = date.getMinutes();
+  let seconds = date.getSeconds();
+  let time = `${localDate} ${localHour}:${minutes}:${seconds}:${ampm}`;
+  console.log("local hour", localHour - 5);
+  console.log("createdAt", localDate);
   if (createdAt) {
-    oldDiv.querySelector(".createdAt").innerHTML = `${createdAt}`;
+    oldDiv.querySelector(".createdAt").innerHTML = `${time}`;
   } else {
     oldDiv.querySelector(".createdAt").innerHTML = "";
   }
-  console.log(message.createdAt);
   oldDivContainer.append(oldDiv);
 
   const editButtonEl = oldDiv.querySelector(".edit");
   editButtonEl.addEventListener("click", onEditMessage);
+
+  const reactionButtonEl1 = oldDiv.querySelector("#reaction1");
+  const reactionButtonEl2 = oldDiv.querySelector("#reaction2");
+  const reactionButtonEl3 = oldDiv.querySelector("#reaction3");
+  const reactionButtonEl4 = oldDiv.querySelector("#reaction4");
+  reactionButtonEl1.innerHTML = `${reactionOb[0].emoji}`;
+  reactionButtonEl2.innerHTML = `${reactionOb[1].emoji}`;
+  reactionButtonEl3.innerHTML = `${reactionOb[2].emoji}`;
+  reactionButtonEl4.innerHTML = `${reactionOb[3].emoji}`;
+  reactionButtonEl1.num = 0;
+  reactionButtonEl2.num = 1;
+  reactionButtonEl3.num = 2;
+  reactionButtonEl4.num = 3;
+
+  console.log("reaction button elements", reactionButtonEl1);
+  reactionButtonEl1.addEventListener("click", onReaction);
+  reactionButtonEl2.addEventListener("click", onReaction);
+  reactionButtonEl3.addEventListener("click", onReaction);
+  reactionButtonEl4.addEventListener("click", onReaction);
 }
 
 // edit existing message
@@ -111,6 +151,31 @@ async function onSaveMessage(event) {
   const oldMessage = await response.json();
 }
 
+function onReaction(event) {
+  console.log("clicked a reaciton", event.target);
+  console.log("event parent", event.target.parentNode);
+  console.log("event target num", event.target.num, typeof event.target.num);
+  console.log("picked?", reactionOb[event.target.num].picked);
+  const oldMessageContainer = document.querySelector(".oldMessageContainer");
+  console.log("oldMessageContainer", oldMessageContainer);
+  const children = [...oldMessageContainer.children];
+  console.log("children", children);
+  const reactionParentConainter = this.closest(".oldMessage");
+  const clickedIndex = children.indexOf(reactionParentConainter);
+  console.log("reaction index", clickedIndex);
+  const userReactionDiv = reactionParentConainter.querySelector(
+    ".userReaction"
+  );
+  if (reactionOb[event.target.num].picked === false) {
+    userReactionDiv.innerHTML =
+      userReactionDiv.innerHTML + event.target.innerHTML;
+    reactionOb[event.target.num].picked = true;
+  } else {
+    console.log("reactions", userReactionDiv.innerHTML);
+    reactionOb[event.target.num].picked = false;
+  }
+}
+
 // when the page first loads
 async function onPageLoad() {
   console.log("onPageLoad");
@@ -155,7 +220,6 @@ async function checkNewMessages() {
   // loop over all those items
   for (let i = 0; i < newMessages.length; i++) {
     const oldMessage = newMessages[i];
-
     addMessageToPage(oldMessage.message, oldMessage.user, oldMessage.createdAt);
   }
 }
