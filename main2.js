@@ -17,8 +17,8 @@ async function onAddMessage(event) {
   inputEl.value = "";
 
   // add the new item to the server
-  // const response = await fetch("http://localhost:3000/message", {
-  const response = await fetch("http://chat.codefriends.larner.com/message", {
+  const response = await fetch("http://localhost:3000/message", {
+    //   const response = await fetch("http://chat.codefriends.larner.com/message", {
     method: "POST",
     body: JSON.stringify({
       message: message,
@@ -80,6 +80,10 @@ async function onSaveMessage(event) {
   this.addEventListener("click", onEditMessage);
   this.innerHTML = "edit";
   const editedMessageContainer = this.parentNode;
+  const editedOldMessage = editedMessageContainer.parentNode;
+  console.log("edited Message Container", editedMessageContainer);
+  const editedUser = document.querySelector(".userName").innerHTML;
+  console.log(editedUser);
   const editedMessage = editedMessageContainer.querySelector("#editedMessage")
     .value;
   console.log("parentNode", this.parentNode);
@@ -88,53 +92,42 @@ async function onSaveMessage(event) {
     ".message"
   ).innerHTML = `${editedMessage}`);
   // save edit to server
+  const children = [...document.querySelector(".oldMessageContainer").children];
+  console.log("children", children);
+  const editedIndex = children.indexOf(editedOldMessage.parentNode);
+
+  console.log("editedIndex", editedIndex);
+  const response = await fetch(`http://localhost:3000/message/${editedIndex}`, {
+    //   const response = await fetch("http://chat.codefriends.larner.com/message", {
+    method: "PUT",
+    body: JSON.stringify({
+      message: editedMessage,
+      user: editedUser,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const oldMessage = await response.json();
 }
-
-//   label.innerHTML = `<input class="checkbox" type="checkbox" checked /> ${description}`;
-
-//   // update the items array to reflect the new completed status of the todo
-const children = [...document.querySelector(".message").children];
-// const clickedLabel = this.parentNode;
-//   const clickedIndex = children.indexOf(this.parentNode);
-//   items[clickedIndex].completed = this.checked;
-
-//   // update the server to reflect the new completed status of the todo
-//   const response = await fetch(
-//     `http://todo.codefriends.larner.com/item/${items[clickedIndex].id}`,
-//     {
-//       method: "PUT",
-//       body: JSON.stringify({
-//         completed: this.checked,
-//       }),
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//     }
-//   );
-//   const json = await response.json();
 
 // when the page first loads
 async function onPageLoad() {
   console.log("onPageLoad");
   // Get access to all the important elements (text input, add button, items div)
   const addButtonEl = document.querySelector("#add-item-button");
-
   addButtonEl.addEventListener("click", onAddMessage);
-
   // fetch all of the todo items from the server
-  // const response = await fetch("http://localhost:3000/messages", {
-  const response = await fetch("http://chat.codefriends.larner.com/messages", {
+  const response = await fetch("http://localhost:3000/messages", {
+    //   const response = await fetch("http://chat.codefriends.larner.com/messages", {
     method: "GET",
   });
-
   // update items array to include the data we got back from the server
   messages = await response.json();
-
   console.log(messages);
   // loop over all those items
   for (let i = 0; i < messages.length; i++) {
     const oldMessage = messages[i];
-
     addMessageToPage(oldMessage.message, oldMessage.user, oldMessage.createdAt);
   }
   let intervalID = window.setInterval(checkNewMessages, 5000);
@@ -148,8 +141,8 @@ async function checkNewMessages() {
   let afterId = messages.length;
   console.log(`after id: ${afterId}`);
   const response = await fetch(
-    // `http://localhost:3000/messages?afterId=${afterId}`,
-    `http://chat.codefriends.larner.com/messages?afterId=${afterId}`,
+    `http://localhost:3000/messages?afterId=${afterId}`,
+    // `http://chat.codefriends.larner.com/messages?afterId=${afterId}`,
     {
       method: "GET",
     }

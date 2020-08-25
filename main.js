@@ -80,8 +80,10 @@ async function onSaveMessage(event) {
   this.addEventListener("click", onEditMessage);
   this.innerHTML = "edit";
   const editedMessageContainer = this.parentNode;
-  const editedUser = editedMessageContainer.querySelector(".userName")
-    .innerHTML;
+  const editedOldMessage = editedMessageContainer.parentNode;
+  console.log("edited Message Container", editedMessageContainer);
+  const editedUser = document.querySelector(".userName").innerHTML;
+  console.log(editedUser);
   const editedMessage = editedMessageContainer.querySelector("#editedMessage")
     .value;
   console.log("parentNode", this.parentNode);
@@ -92,7 +94,7 @@ async function onSaveMessage(event) {
   // save edit to server
   const children = [...document.querySelector(".oldMessageContainer").children];
   console.log("children", children);
-  const editedIndex = children.indexOf(editedMessageContainer.parentNode);
+  const editedIndex = children.indexOf(editedOldMessage.parentNode);
 
   console.log("editedIndex", editedIndex);
   const response = await fetch(`http://localhost:3000/message/${editedIndex}`, {
