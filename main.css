@@ -43,3 +43,35 @@
   flex-direction: row;
   justify-content: space-between;
 }
+
+.userOldMessage {
+  width: 100%;
+}
+
+.messageContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+.message {
+  flex: 6;
+}
+
+.messageContainer:hover {
+  background-color: rgba(00, 00, 00, 0.2);
+}
+
+.reactions {
+  flex: 0.2;
+  text-align: center;
+  background-color: blue;
+  margin: 0rem 0.1rem;
+  /* visibility: hidden; */
+}
+.reactions:hover {
+  background-color: cadetblue;
+}
+
+.edit {
+  flex: 0.1;
+}

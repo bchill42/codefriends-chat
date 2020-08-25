@@ -114,23 +114,18 @@ async function onPageLoad() {
   console.log("onPageLoad");
   // Get access to all the important elements (text input, add button, items div)
   const addButtonEl = document.querySelector("#add-item-button");
-
   addButtonEl.addEventListener("click", onAddMessage);
-
   // fetch all of the todo items from the server
   const response = await fetch("http://localhost:3000/messages", {
     //   const response = await fetch("http://chat.codefriends.larner.com/messages", {
     method: "GET",
   });
-
   // update items array to include the data we got back from the server
   messages = await response.json();
-
   console.log(messages);
   // loop over all those items
   for (let i = 0; i < messages.length; i++) {
     const oldMessage = messages[i];
-
     addMessageToPage(oldMessage.message, oldMessage.user, oldMessage.createdAt);
   }
   let intervalID = window.setInterval(checkNewMessages, 5000);
