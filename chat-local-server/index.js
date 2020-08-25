@@ -9,6 +9,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 const messages = [];
+const reactions = [];
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
@@ -26,14 +27,25 @@ app.post("/message", (req, res) => {
     user: req.body.user,
     message: req.body.message,
     createdAt: new Date(),
-    // reactions: {
-    //   user: body.user,
-    //   reaction: body.emoji,
-    //   createdAt: new Date(),
-    // },
   };
   messages.push(message);
   res.json(message);
+});
+
+app.post("/message/:id/reaction", (req, res) => {
+  if (!req.body.user) {
+    return res.status(400).json({ error: "Missing user" });
+  }
+  if (!req.body.reaction) {
+    return res.status(400).json({ error: "Missing reaction" });
+  }
+  const reaction = {
+    user: req.body.user,
+    reaction: req.body.reaction,
+    createdAt: new Date(),
+  };
+  reactions.push(reaction);
+  res.json(reaction);
 });
 
 app.get("/messages", (req, res) => {
