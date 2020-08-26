@@ -1,4 +1,4 @@
-console.log("working");
+// import { EmojiButton } from "@joeattardi/emoji-button";
 
 let messages = [];
 const reactionOb = [
@@ -182,6 +182,16 @@ async function onPageLoad() {
   // Get access to all the important elements (text input, add button, items div)
   const addButtonEl = document.querySelector("#add-item-button");
   addButtonEl.addEventListener("click", onAddMessage);
+  // add emoji to input
+  const picker = new EmojiButton();
+  const trigger = document.querySelector(".trigger");
+  console.log("picker", picker);
+  console.log("input value", document.querySelector("#item-text"));
+  picker.on("emoji", (emoji) => {
+    console.log("emoji addded to input clicked");
+    document.querySelector("#item-text").value += emoji;
+  });
+  trigger.addEventListener("click", () => picker.togglePicker(trigger));
   // fetch all of the todo items from the server
   //   const response = await fetch("http://localhost:3000/messages", {
   const response = await fetch("http://chat.codefriends.larner.com/messages", {
