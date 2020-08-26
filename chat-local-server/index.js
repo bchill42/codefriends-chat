@@ -70,16 +70,15 @@ app.put("/message/:id", (req, res) => {
 });
 
 app.delete("/message/:id", (req, res) => {
-  // if (!messages[req.params.id - 1]) {
-  //   return res.status(404).json({ error: "Unknown item" });
-  // }
-  // if (req.body.message) {
-  //   messages[req.params.id - 1].message = req.body.message;
-  // }
-  // if (req.body.user) {
-  //   messages[req.params.id - 1].user = req.body.user;
-  // }
-  // res.json(messages[req.params.id - 1]);
+  // doesn't work
+  if (!messages[req.params.id - 1]) {
+    return res.status(404).json({ error: "Unknown item" });
+  }
+  const index = messages.indexOf(req.body.message);
+  if (req.body.message) {
+    messages.splice(index, 1);
+  }
+  res.json({ message: "message deleted" });
 });
 
 app.listen(port, () => {
